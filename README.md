@@ -49,5 +49,5 @@
 - (2) The player *LOSES* if the player runs out of lives (the picked word IS shown)
 ![alt tag](http://i58.tinypic.com/2a8me4z.jpg)
 
-- (3) The player *QUITS* (any time) without without completing the game (the picked word is NOT shown)
+- (3) The player *QUITS* (any time) without winning or losing  (the picked word is NOT shown)
 ![alt tag](http://i57.tinypic.com/148lr7t.jpg)
