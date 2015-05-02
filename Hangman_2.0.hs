@@ -1,19 +1,19 @@
 import System.IO
-import Data.Char					    -- isDigit, toUpper, isAlpha
+import Data.Char					-- isDigit, toUpper, isAlpha
 import System.Exit
 import System.Random  				-- Random Word
 import System.Process 				-- Clear Screen
 
 main :: IO()
 main = do
-		system "cls"							-- Clear Screen (Windows)
-		putStr howTo							-- Instructions
+		system "cls"				-- Clear Screen (Windows)
+		putStr howTo				-- Instructions
 		startHangman
 		
 playHangman :: String -> Int -> [Char] -> IO ()
 playHangman theWord no allGuesses
 	| (all (`elem` allGuesses) theWord) = displayResult theWord no 1 allGuesses		-- A Match
-	| (no >= 9) = displayResult theWord no 0 allGuesses 							            -- Out of lives
+	| (no >= 9) = displayResult theWord no 0 allGuesses 							-- Out of lives
 	| otherwise = do
 --		putStrLn ("\nHangman> ### Chosen Word: " ++ theWord)
 		
@@ -24,11 +24,11 @@ playHangman theWord no allGuesses
 		let no'
 			| elem letter theWord = no					-- Correct guess
 			| elem letter allGuesses = no				-- Already guessed
-			| otherwise = succ no						    -- Decrement num of lives
+			| otherwise = succ no						-- Decrement num of lives
 
 		let allGuesses'
 			| letter `elem` allGuesses = allGuesses		-- Already an element
-			| otherwise = letter:allGuesses				    -- Add to allGuesses'
+			| otherwise = letter:allGuesses				-- Add to allGuesses'
 
 		playHangman theWord no' allGuesses'
 
@@ -81,11 +81,11 @@ startHangman = do
 	
 	putStr "Hangman> " 
 	option <- getLine
-	if (null option) then reStart				        -- If empty, re-Prompt
+	if (null option) then reStart						-- If empty, re-Prompt
 		else do let head:tail = option
 			if head == ':' && not (null tail) then exitGame
 			else if (not (checkDigit option)) then reStart
-				else do let opt = read option :: Int  -- Convert to Int
+				else do let opt = read option :: Int  	-- Convert to Int
 					if opt == 1 then singlePlayer
 						else if opt == 2 then multiPlayer
 							else if opt == 0 then exitGame else reStart
@@ -120,7 +120,7 @@ exitGame = do
 takeLength = do
 	putStr "Pick a length of word to guess (2-30): " 
 	tempLength <- getLine
-	if (null tempLength) then reLength			    -- If empty, re-Prompt
+	if (null tempLength) then reLength			-- If empty, re-Prompt
 	else if ((checkDigit tempLength) && (length tempLength >= 1)) then do
 			let len = read tempLength :: Int				-- Read as int
 			if (len >= 2 && len <= 30) then return len else reLength
@@ -144,7 +144,7 @@ takeGuess = do
 	putStr "Guess a letter (or :Q to quit): "
 	tempLetter <- getLine
 	if (null tempLetter) || (length tempLetter < 1) then reGuess
-		else do let head:tail = tempLetter					    -- Split input (head:tail)
+		else do let head:tail = tempLetter					-- Split input (head:tail)
 			if isAlpha head then return $ toUpper head		-- Return head of input
 			else if head == ':' && not (null tail) then exitGame else reGuess
 
