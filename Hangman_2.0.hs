@@ -6,14 +6,14 @@ import System.Process 				-- Clear Screen
 
 main :: IO()
 main = do
-		system "cls"				-- Clear Screen (Windows)
-		putStr howTo				-- Instructions
+		system "cls"			-- Clear Screen (Windows)
+		putStr howTo			-- Instructions
 		startHangman
 		
 playHangman :: String -> Int -> [Char] -> IO ()
 playHangman theWord no allGuesses
 	| (all (`elem` allGuesses) theWord) = displayResult theWord no 1 allGuesses		-- A Match
-	| (no >= 9) = displayResult theWord no 0 allGuesses 							-- Out of lives
+	| (no >= 9) = displayResult theWord no 0 allGuesses 					-- Out of lives
 	| otherwise = do
 --		putStrLn ("\nHangman> ### Chosen Word: " ++ theWord)
 		
@@ -22,13 +22,13 @@ playHangman theWord no allGuesses
 		putStr "Hangman> "
 		letter <- takeGuess	
 		let no'
-			| elem letter theWord = no					-- Correct guess
-			| elem letter allGuesses = no				-- Already guessed
-			| otherwise = succ no						-- Decrement num of lives
+			| elem letter theWord = no			-- Correct guess
+			| elem letter allGuesses = no			-- Already guessed
+			| otherwise = succ no				-- Decrement num of lives
 
 		let allGuesses'
 			| letter `elem` allGuesses = allGuesses		-- Already an element
-			| otherwise = letter:allGuesses				-- Add to allGuesses'
+			| otherwise = letter:allGuesses			-- Add to allGuesses'
 
 		playHangman theWord no' allGuesses'
 
@@ -36,7 +36,7 @@ playHangman theWord no allGuesses
 -- Compares pickedWord's letter to allGuesses', and update view
 updateWord :: String -> String -> [Char]
 updateWord pickedWord allGuesses =
-	concatMap (\x -> if x `elem` allGuesses then [x] else " - ") pickedWord 		-- goo.gl/8kxNhH + goo.gl/72HEQG
+	concatMap (\x -> if x `elem` allGuesses then [x] else " - ") pickedWord 	-- goo.gl/8kxNhH + goo.gl/72HEQG
 
 -- Accumulate bad guesses
 badGuesses :: String -> String -> [Char]
@@ -53,7 +53,7 @@ displayResult theWord no state allGuesses = do
 	if (state == 1) || (state == 0) then do
 		putStrLn "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 		putStr "Hangman> "
-		startHangman									-- Restart/New game
+		startHangman								-- Restart/New game
 		else return()
 
 howTo = 
@@ -85,7 +85,7 @@ startHangman = do
 		else do let head:tail = option
 			if head == ':' && not (null tail) then exitGame
 			else if (not (checkDigit option)) then reStart
-				else do let opt = read option :: Int  	-- Convert to Int
+				else do let opt = read option :: Int  		-- Convert to Int
 					if opt == 1 then singlePlayer
 						else if opt == 2 then multiPlayer
 							else if opt == 0 then exitGame else reStart
@@ -97,7 +97,7 @@ singlePlayer = do
 	
 	-- Get filtered word list (by length), and then pick a random word
 	wordList <- fmap (filter (\x -> length x == wordLen) . lines) $ readFile "words.txt"
-	tempWord <- randomRIO (0, length wordList - 1) >>= return . (wordList !!) 				-- goo.gl/i4V2Mq 
+	tempWord <- randomRIO (0, length wordList - 1) >>= return . (wordList !!) 			-- goo.gl/i4V2Mq 
 	
 	let pickedWord = capitalize tempWord
 	putStrLn "Hangman> A word has been picked for you... Let's get this started!"
@@ -120,9 +120,9 @@ exitGame = do
 takeLength = do
 	putStr "Pick a length of word to guess (2-30): " 
 	tempLength <- getLine
-	if (null tempLength) then reLength			-- If empty, re-Prompt
+	if (null tempLength) then reLength					-- If empty, re-Prompt
 	else if ((checkDigit tempLength) && (length tempLength >= 1)) then do
-			let len = read tempLength :: Int				-- Read as int
+			let len = read tempLength :: Int			-- Read as int
 			if (len >= 2 && len <= 30) then return len else reLength
 		else do let head:tail = tempLength
 			if head == ':' && not (null tail) then exitGame else reLength
@@ -133,7 +133,7 @@ takeWord = do
 	tempWord <- getLine
 	putStrLn ""
 	
-	if (null tempWord) then reWord				-- If empty, re-Prompt
+	if (null tempWord) then reWord						-- If empty, re-Prompt
 		else do let head:tail = tempWord
 			if head == ':' && not (null tail) then exitGame
 			else if (null tempWord) || (checkDigit tempWord) || not (checkAlpha tempWord) then reWord
@@ -144,7 +144,7 @@ takeGuess = do
 	putStr "Guess a letter (or :Q to quit): "
 	tempLetter <- getLine
 	if (null tempLetter) || (length tempLetter < 1) then reGuess
-		else do let head:tail = tempLetter					-- Split input (head:tail)
+		else do let head:tail = tempLetter				-- Split input (head:tail)
 			if isAlpha head then return $ toUpper head		-- Return head of input
 			else if head == ':' && not (null tail) then exitGame else reGuess
 
@@ -157,7 +157,7 @@ checkDigit xs = all isDigit xs
 checkAlpha :: [Char] -> Bool 
 checkAlpha xs = all isAlpha xs
 
--- Capitalizes given string (entirely)					# goo.gl/GykFUw
+-- Capitalizes given string (entirely)						# goo.gl/GykFUw
 capitalize :: String -> String
 capitalize str = map toUpper str
 
