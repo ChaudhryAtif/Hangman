@@ -8,7 +8,7 @@
 
 # Hangman Overview
 - Hangman a game of guessing a word (or a phrase), one letter at a time
-- In this version of the game, the player has 8 lives/chances to guess all the letters in the word.
+- In this version of the game, the player has 9 lives/chances to guess all the letters in the word.
 
 # Game: Start
 * Download Haskell Platform: http://goo.gl/bfyWAW (Windows for me)
